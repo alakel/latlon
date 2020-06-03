@@ -37,5 +37,16 @@ latcurl <- function(){
   }
 }
 
+  for (j in 0:100) {
+    for (i in (j*1000+1):(j*1000+1000)) {
+      test <- fromJSON(httpGET(paste("http://photon.komoot.de/reverse?lon=",latlon$LON[i],"&lat=",latlon$LAT[i], sep="")))
+      latlon$zip[i] <- ifelse(is.null(test$features[[1]]$properties$postcode),"NA", test$features[[1]]$properties$postcode)
+      latlon$name[i] <- ifelse(is.null(test$features[[1]]$properties$name),"NA",test$features[[1]]$properties$name)
+      print(i)
+    }
+    save.image("/cloud/project/latlon.RData")
+  }
+  
+  
 ```
 

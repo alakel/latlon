@@ -1,41 +1,9 @@
----
-title: "Exercice"
-output: html_document
----
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+install.packages("rjson")
+install.packages("RCurl")
 
-```{r}
-library(DBI)
-con <- dbConnect(RSQLite::SQLite(), dbname = "latlon.db")
-library(revgeo)
-laton <- function(start){
-  for (i in start:(start+900)) {
-        test <- revgeo(latlon$LON[i], latlon$LAT[i], output="frame")
-        latlon$zip[i] <- test$zip[1]
-        dbAppendTable(con, "latlon", latlon[i,])
-        print(i)
-        Sys.sleep(0.5)
-
-    }
-}
-
-dbDisconnect(con)
-library(rjson)
 library(RCurl)
-latcurl <- function(){
-  for (j in 0:100) {
-    for (i in (j*1000+1):(j*1000+1000)) {
-      test <- fromJSON(httpGET(paste("http://photon.komoot.de/reverse?lon=",latlon$LON[i],"&lat=",latlon$LAT[i], sep="")))
-      latlon$zip[i] = ifelse(is.null(test$features[[1]]$properties$postcode),"NA", test$features[[1]]$properties$postcode)
-      latlon$name[i] = ifelse(is.null(test$features[[1]]$properties$name),"NA",test$features[[1]]$properties$name)
-      print(i)
-    }
-  save.image("~/Google Drive/_Cours/M2_Data_Analysis/_LPMIndProjets/Examens2020/EXamenLPMIND/latlon.RData")
-  }
-}
+library(rjson)
 
   for (j in 0:100) {
     for (i in (j*1000+1):(j*1000+1000)) {
